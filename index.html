@@ -1,0 +1,50 @@
+<!doctype html>
+<html ng-app="cloudplayer">
+
+<head>
+    <meta charset="UTF-8">
+    <title>cloudplayer by Max Chernin</title>
+    <!--    Core CSS    -->
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+    <!-- Animate CSS -->
+    <link rel="stylesheet" href="assets/css/animate.css">
+    <!--    Custom Css file   -->
+    <link rel="stylesheet" href="assets/css/custom.css">
+</head>
+
+<body>
+    <!-- Container -->
+    <div class="container cloudplayer">
+      <cloudplayer-header></cloudplayer-header>
+<!--        header directive-->
+        
+         <div ui-view></div>
+<!--        goes to mainpage.html-->
+   
+    </div>
+    <!-- ./ container-->
+
+<footer>
+     <div class="well animated slideInDown">Created by <a href="http://blog.maxchernin.net">Max Chernin</a></div>
+</footer>
+</body>
+
+<!-- Vendors -->
+<script src="bower_components/jquery/dist/jquery.js"></script>
+<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+<script src="bower_components/angular-resource/angular-resource.js"></script>
+<script src="bower_components/angular-cookies/angular-cookies.js"></script>
+<!-- App <-> minified -->
+<script src="build/app/javascript/cloudplayer-v0.1.0.js"></script>
+
+<!-- Assets -->
+<!--<script src="//connect.soundcloud.com/sdk-2.0.0.js"></script>-->
+<!--
+<script src="app/services/sdk-2.0.0.js"></script>
+<script src="app/services/soundcloud.js"></script>
+-->
+
+</html>

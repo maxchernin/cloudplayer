@@ -1,0 +1,28 @@
+   <div class="col-md-4 col-sm-4 col-xs-4">
+        <div class="panel panel-default search custpanel">
+            <div class="panel-heading" style="text-align:center">Search</div>
+            <div class="panel-body">
+                <input type="text" placeholder="Enter text..." ng-model="userInput">
+                <button type="button" class="btn btn-primary btn-sm" ng-click="getSongs()">
+                    <span class="glyphicon glyphicon-search"></span>
+                </button>
+                
+                <br/>
+               <list-sort ng-if="listViewSelector">
+                </list-sort>
+<!--                @@last point-->
+                <tile-sort ng-if="!listViewSelector"></tile-sort>
+                <span class="pager">
+                <li ng-click="onClickNextBtn()"><a href="#">
+                        Next <span class="glyphicon glyphicon-forward"></span></a>
+                </li>
+                <span class="glyphicon glyphicon-th-list" ng-click="changeView()"></span>
+                <span class="glyphicon glyphicon-th-large" ng-click="changeView()"></span>
+                </span>
+                <!--   ./ pager -->
+            </div>
+            <!--  ./ panel body-->
+        </div>
+        <!--   ./panel-->
+    </div>
+    <!--   ./ col #1-->

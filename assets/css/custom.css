@@ -1,0 +1,22 @@
+.cloudplayer {
+    
+}
+.cloudplayer .jumbotron {
+    background: orange;
+    color:white;
+}
+.cloudplayer .search .panel-heading{
+    color:white;
+        background: blue
+}
+.cloudplayer .custpanel {
+    
+}
+.cloudplayer .custpanel .ul {
+    list-style: none;
+    list-style-type: none;
+}
+.no-bullets {
+     list-style: none;
+    list-style-type: none;
+}

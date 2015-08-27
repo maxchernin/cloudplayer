@@ -1,0 +1,36 @@
+{
+  "name": "musicanto",
+  "version": "1.0.0",
+  "authors": [
+    "maxcher <mctestpub@gmail.com>"
+  ],
+  "description": "streaming app from soundcloud",
+  "main": "index.html",
+  "moduleType": [
+    "node"
+  ],
+  "keywords": [
+    "Music",
+    "soundcloud",
+    "musicanto"
+  ],
+  "license": "MIT",
+  "homepage": "http://maxchernin.net",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-ui-router": "~0.2.15",
+    "jquery": "~2.1.4",
+    "angular": "~1.4.4",
+    "bootstrap": "~3.3.5",
+    "angular-resource": "~1.4.4"
+  },
+  "devDependencies": {
+    "angular-cookies": "~1.4.4"
+  }
+}
