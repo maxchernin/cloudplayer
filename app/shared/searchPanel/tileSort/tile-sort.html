@@ -1,4 +1,4 @@
-   <div ng-repeat="song in searchResult" class="col-sm-4" height="120px" width="100%" title="{{song.title + ' ' +  (song.duration | date: 'mm:ss')}}">
-    <img ng-src="{{song.artwork_url}}" class="img-responsive img-thumbnail center-block"  ng-click="selectSong(song)">
+   <div ng-repeat="song in mainPageCtrl.searchResult" class="col-sm-4" height="120px" width="100%" title="{{song.title + ' ' +  (song.duration | date: 'mm:ss')}}">
+    <img ng-src="{{song.artwork_url}}" class="img-responsive img-thumbnail center-block"  ng-click="mainPageCtrl.selectSong(song)">
        <span class="text-center">{{song.title}}</span>
 </div>

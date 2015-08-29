@@ -2,22 +2,21 @@
         <div class="panel panel-default search custpanel">
             <div class="panel-heading" style="text-align:center">Search</div>
             <div class="panel-body">
-                <input type="text" placeholder="Enter text..." ng-model="userInput">
-                <button type="button" class="btn btn-primary btn-sm" ng-click="getSongs()">
+                <input type="text" placeholder="Enter text..." ng-model="mainPageCtrl.userInput">
+                <button type="button" class="btn btn-primary btn-sm" ng-click="mainPageCtrl.getSongs()">
                     <span class="glyphicon glyphicon-search"></span>
                 </button>
-                
                 <br/>
-               <list-sort ng-if="listViewSelector">
+               <list-sort ng-if="mainPageCtrl.listViewSelector">
                 </list-sort>
 <!--                @@last point-->
-                <tile-sort ng-if="!listViewSelector"></tile-sort>
+                <tile-sort ng-if="!(mainPageCtrl.listViewSelector)"></tile-sort>
                 <span class="pager">
-                <li ng-click="onClickNextBtn()"><a href="#">
+                <li ng-click="mainPageCtrl.onClickNextBtn()"><a href="#">
                         Next <span class="glyphicon glyphicon-forward"></span></a>
                 </li>
-                <span class="glyphicon glyphicon-th-list" ng-click="changeView()"></span>
-                <span class="glyphicon glyphicon-th-large" ng-click="changeView()"></span>
+                <span class="glyphicon glyphicon-th-list" ng-click="mainPageCtrl.changeView()"></span>
+                <span class="glyphicon glyphicon-th-large" ng-click="mainPageCtrl.changeView()"></span>
                 </span>
                 <!--   ./ pager -->
             </div>

@@ -4,7 +4,7 @@
     function tileSortDirFn(){
         return {
             restrict: 'EA',
-//            templateUrl: 'app/shared/searchPanel/tileSort/tile-sort.html',
+            templateUrl: 'app/shared/searchPanel/tileSort/tile-sort.html',
         }
     }
 })(angular);

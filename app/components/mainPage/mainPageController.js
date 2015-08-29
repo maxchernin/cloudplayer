@@ -3,53 +3,74 @@
     angular.module('Controllers').controller('mainPageController', ['$scope', '$location', '$sce', 'songHistoryFactory', mainPageController]);
 
     function mainPageController($scope, $location, $sce, songHistoryFactory) {
-        $scope.defualtPicPath = "assets/images/soundcloud.png"
-        $scope.isSelected = false;
-        $scope.recents = songHistoryFactory.getRecentSongs();
-        $scope.selectedWidgetUrl = '';
+        console.log("inside MainController");
+        this.scope = $scope;
+        this.defualtPicPath = "assets/images/soundcloud.png"
+        this.isSelected = false;
+        this.recents = songHistoryFactory.getRecentSongs();
+        this.selectedWidgetUrl = '';
+        this.searchResult;
+        this.listViewSelector;
         var nextPage = ''
         var pageSize = 6;
-//        $scope.listViewSelector = songHistoryFactory.getListViewSelector();
+        var userInput = '';
+        //        $scope.listViewSelector = songHistoryFactory.getListViewSelector();
 
         SC.initialize({
             client_id: "d652006c469530a4a7d6184b18e16c81"
         });
-        var setResults = function (tracks) {
-                $scope.searchResult = tracks.collection;
-                $scope.$apply()
+        mainPageController.prototype.setResults = function (tracks) {
+                console.log("setResults(tracks) running");
+                this.searchResult = tracks.collection;
+            this.scope.$apply();
+            console.log(this.searchResult)
+//                this.scope.$apply()
                 nextPage = tracks.next_href;
+            console.log("setResults finished.")
             }
             //        this method retrives all songs with string taken form input field plus saves the search
-        $scope.getSongs = function () {
+        this.getSongs = function () {
+                console.log("getSongs() running...")
+                console.log("search added: " + this.userInput)
+                var self = this
                 SC.get('/tracks', {
-                    q: $scope.userInput,
+                    q: this.userInput,
                     'limit': pageSize,
                     'linked_partitioning': 1,
                 }, function (tracks) {
-                    setResults(tracks)
+                    self.setResults(tracks)
                 });
-                songHistoryFactory.addSongToRecents($scope.userInput)
-                $scope.listViewSelector = songHistoryFactory.getListViewSelector();
+                songHistoryFactory.addSongToRecents(this.userInput)
+                console.log("Song List:");
+            console.log(this.searchResult);
+                this.listViewSelector = songHistoryFactory.getListViewSelector();
             }
             //                sets selected song by user click on a song item from list, also sets a defualt photo if no artwork exists
-        $scope.selectSong = function (selectedSong) {
-            $scope.selected = selectedSong;
-            if ($scope.selected.artwork_url == null) {
-                $scope.selected.artwork_url = $scope.defualtPicPath
+        this.selectSong = function (selectedSong) {
+            console.log("selectSong(selectedSong) running... ")
+            this.selected = selectedSong;
+            if (this.selected.artwork_url == null) {
+                this.selected.artwork_url = this.defualtPicPath
             }
-            $scope.isSelected = true;
-            $scope.selectedWidgetUrl = $sce.trustAsResourceUrl("https://w.soundcloud.com/player/?url=" + $scope.selected.uri + "&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true")
+            this.isSelected = true;
+            this.selectedWidgetUrl = $sce.trustAsResourceUrl("https://w.soundcloud.com/player/?url=" + this.selected.uri + "&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true")
+            console.log(this.selectedWidgetUrl)
         }
-        $scope.onClickNextBtn = function () {
+        this.onClickNextBtn = function () {
+            var self = this;
+            console.log(this.searchResult)
+            console.log(this.selectedWidgetUrl)
+            console.log("onClickNextBtn() running...")
             SC.get(nextPage, function (tracks) {
-                setResults(tracks);
+                self.setResults(tracks);
 
             })
         }
-        $scope.changeView = function(){
-            console.log("list change clicked")
+        this.changeView = function () {
+            console.log("changeView running...")
             songHistoryFactory.setListViewSelector()
-            $scope.listViewSelector = songHistoryFactory.getListViewSelector();
+            this.listViewSelector = songHistoryFactory.getListViewSelector();
+             console.log("listviewselector= "+ this.listViewSelector)
         }
     }
 })(angular);
