@@ -84,14 +84,20 @@ function PickerDialog(){_ref1=PickerDialog.__super__.constructor.apply(this,argu
         SC.initialize({
             client_id: "d652006c469530a4a7d6184b18e16c81"
         });
-        mainPageController.prototype.setResults = function (tracks) {
+        this.setResults = function (tracks) {
+                var self = this
                 console.log("setResults(tracks) running");
                 this.searchResult = tracks.collection;
-            this.scope.$apply();
-            console.log(this.searchResult)
-//                this.scope.$apply()
+                this.searchResult.forEach(function (item) {
+                    if (item.artwork_url == null) {
+                        item.artwork_url = self.defualtPicPath
+                    }
+                })
+                this.scope.$apply();
+                console.log(this.searchResult)
+                    //                this.scope.$apply()
                 nextPage = tracks.next_href;
-            console.log("setResults finished.")
+                console.log("setResults finished.")
             }
             //        this method retrives all songs with string taken form input field plus saves the search
         this.getSongs = function () {
@@ -107,19 +113,17 @@ function PickerDialog(){_ref1=PickerDialog.__super__.constructor.apply(this,argu
                 });
                 songHistoryFactory.addSongToRecents(this.userInput)
                 console.log("Song List:");
-            console.log(this.searchResult);
+                console.log(this.searchResult);
                 this.listViewSelector = songHistoryFactory.getListViewSelector();
             }
             //                sets selected song by user click on a song item from list, also sets a defualt photo if no artwork exists
         this.selectSong = function (selectedSong) {
             console.log("selectSong(selectedSong) running... ")
             this.selected = selectedSong;
-            if (this.selected.artwork_url == null) {
-                this.selected.artwork_url = this.defualtPicPath
-            }
             this.isSelected = true;
             this.selectedWidgetUrl = $sce.trustAsResourceUrl("https://w.soundcloud.com/player/?url=" + this.selected.uri + "&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true")
-            console.log(this.selectedWidgetUrl)
+            console.log(self.selectedWidgetUrl)
+            console.log("isSelected? " + this.isSelected)
         }
         this.onClickNextBtn = function () {
             var self = this;
@@ -135,7 +139,8 @@ function PickerDialog(){_ref1=PickerDialog.__super__.constructor.apply(this,argu
             console.log("changeView running...")
             songHistoryFactory.setListViewSelector()
             this.listViewSelector = songHistoryFactory.getListViewSelector();
-             console.log("listviewselector= "+ this.listViewSelector)
+            console.log("listviewselector= " + this.listViewSelector)
+
         }
     }
 })(angular);
