@@ -5,6 +5,7 @@
     background: orange;
     color:white;
 }
+
 .cloudplayer .search .panel-heading{
     color:white;
         background: blue
@@ -20,3 +21,16 @@
      list-style: none;
     list-style-type: none;
 }
+.custom-font-logo {
+   font-family: 'Lobster', cursive;
+}
+.custom-font-header {
+    font-family: 'Exo 2', sans-serif;
+}
+.custom-font {
+    font-family: 'Patua One', cursive;
+}
+/*
+font-family: 'Lobster', cursive;
+font-family: 'Exo 2', sans-serif;
+font-family: 'Patua One', cursive;*/
