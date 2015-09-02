@@ -5,5 +5,5 @@
     angular.module('Directives',[]);
     angular.module('Services',['ngResource', 'ngCookies']);
     angular.module('Routes', ['ui.router'])
-    angular.module('cloudplayer', ['Routes', 'Controllers', 'Directives', 'Services'])
+    angular.module('cloudplayer', ['Routes', 'Controllers', 'Directives', 'Services', 'ngAnimate'])
 })(angular);

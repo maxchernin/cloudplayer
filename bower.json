@@ -31,6 +31,7 @@
     "angular-resource": "~1.4.4"
   },
   "devDependencies": {
+    "angular-animate": "~1.4.5",
     "angular-cookies": "~1.4.4"
   }
 }
