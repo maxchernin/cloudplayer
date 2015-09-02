@@ -12,7 +12,7 @@
         this.searchResult;
         this.listViewSelector;
         var nextPage = ''
-        var pageSize = 6;
+        var pageSize = 9;
         var userInput = '';
         //        $scope.listViewSelector = songHistoryFactory.getListViewSelector();
 

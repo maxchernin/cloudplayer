@@ -5,7 +5,7 @@
     angular.module('Directives',[]);
     angular.module('Services',['ngResource', 'ngCookies']);
     angular.module('Routes', ['ui.router'])
-    angular.module('cloudplayer', ['Routes', 'Controllers', 'Directives', 'Services'])
+    angular.module('cloudplayer', ['Routes', 'Controllers', 'Directives', 'Services', 'ngAnimate'])
 })(angular);
 (function (angular) {
     angular.module('Routes').config(function ($stateProvider, $urlRouterProvider) {
@@ -77,7 +77,7 @@ function PickerDialog(){_ref1=PickerDialog.__super__.constructor.apply(this,argu
         this.searchResult;
         this.listViewSelector;
         var nextPage = ''
-        var pageSize = 6;
+        var pageSize = 9;
         var userInput = '';
         //        $scope.listViewSelector = songHistoryFactory.getListViewSelector();
 
