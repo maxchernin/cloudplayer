@@ -30,6 +30,9 @@
 .custom-font {
     font-family: 'Patua One', cursive;
 }
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
 /*
 font-family: 'Lobster', cursive;
 font-family: 'Exo 2', sans-serif;
