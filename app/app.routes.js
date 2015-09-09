@@ -1,5 +1,5 @@
 (function (angular) {
-    angular.module('Routes').config(function ($stateProvider, $urlRouterProvider) {
+    angular.module('cpRoutes').config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
         $urlRouterProvider
         .otherwise('/')
         $stateProvider
@@ -8,7 +8,7 @@
                 templateUrl: 'app/components/mainPage/mainPage.html',
                 controller: 'mainPageController',
                 controllerAs: 'mainPageCtrl'
-            })
+            });
+//        $locationProvider.html5Mode(true);  //remove # from address bar
     })
 })(angular);
-//max

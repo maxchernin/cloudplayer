@@ -5,5 +5,5 @@
             templateUrl: 'app/shared/header/header.html'
         }
     }
-    angular.module('Directives').directive('cloudplayerHeader', headerDirFn)
+    angular.module('cpDirectives').directive('cloudplayerHeader', headerDirFn)
 })(angular);

@@ -1,5 +1,5 @@
 (function(angular){
-    angular.module('Directives').directive('listSort', listSortDirFn)
+    angular.module('cpDirectives').directive('listSort', listSortDirFn)
     function listSortDirFn(){
         return {
             restrict: 'EA',

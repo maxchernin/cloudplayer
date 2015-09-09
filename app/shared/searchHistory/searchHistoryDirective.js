@@ -1,8 +1,9 @@
 (function(angular){
-    angular.module('Directives').directive('searchHistory', searchHistoryDirFn)
+    angular.module('cpDirectives').directive('searchHistory', searchHistoryDirFn)
     function searchHistoryDirFn(){
         return {
             restrict: 'EA',
+            transclude: true,
             templateUrl: 'app/shared/searchHistory/search-history.html'
         }
     }

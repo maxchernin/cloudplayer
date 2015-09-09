@@ -1,5 +1,5 @@
 (function (angular) {
-    angular.module('Services')
+    angular.module('cpServices')
         .factory('songHistoryFactory', ['$http', '$cookies', songHistoryFactory]);
 
     function songHistoryFactory($http /*for later use */, $cookies) {
@@ -20,11 +20,16 @@
             return recents;
         }
 //        adds the recent song recived from the controller (userinput ng model) to the array, then saves the array as the value stored inside the recentSearches cookie
-        function addSongToRecents(destSong){
+        function addSongToRecents(destSong, searchDatetime){
+            var savedObject = {name: destSong,
+                              date: searchDatetime.getDate() + "/" + searchDatetime.getMonth() + "/" + searchDatetime.getFullYear(),
+                               time: searchDatetime.getUTCHours() + ":" + searchDatetime.getUTCMinutes()
+                              }
         if (recents.length >= historyLimit){
                 recents.pop();
             }
-            recents.unshift(destSong);
+            recents.unshift(savedObject);
+            console.log(recents)
             $cookies.putObject('recentSearches', recents);
         }
 //        changes the listViewSelector param then saves it as cookie value

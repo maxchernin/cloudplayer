@@ -32,6 +32,8 @@
   },
   "devDependencies": {
     "angular-animate": "~1.4.5",
-    "angular-cookies": "~1.4.4"
+    "angular-cookies": "~1.4.4",
+    "please-wait": "~0.0.5",
+    "toastr": "~2.1.2"
   }
 }

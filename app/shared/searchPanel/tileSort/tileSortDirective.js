@@ -1,5 +1,5 @@
 (function (angular){
-    angular.module('Directives').directive('tileSort', tileSortDirFn)
+    angular.module('cpDirectives').directive('tileSort', tileSortDirFn)
 
     function tileSortDirFn(){
         return {

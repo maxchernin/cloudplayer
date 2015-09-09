@@ -1,6 +1,6 @@
 (function(angular){
     "use strict";
-    angular.module('Directives').directive('cloudPlayer', playerDirFn)
+    angular.module('cpDirectives').directive('cloudPlayer', playerDirFn)
     function playerDirFn(){
         return{
             restrict: 'EA',

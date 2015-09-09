@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
     <!-- Animate CSS -->
     <link rel="stylesheet" href="assets/css/animate.css">
+    <link rel="stylesheet" href="bower_components/please-wait/build/please-wait.css">
+    <link rel="stylesheet" href="bower_components/toastr/toastr.css">
     <!--    Custom Css file   -->
     <link rel="stylesheet" href="assets/css/custom.css">
 <!--    custom fonts-->
@@ -16,8 +18,18 @@
 
 </head>
 
-<body>
-   <img src="assets/images/loading.gif" ng-hide="true" style="align:center">
+<!--@@change-->
+<body class="body">
+<!--   <img src="assets/images/loading.gif" ng-hide="true" style="align:center">  //replaced by loading-screen.js-->
+
+<!-- <div class="spinner" ng-hide="true">
+  <div class="rect1"></div>
+  <div class="rect2"></div>
+  <div class="rect3"></div>
+  <div class="rect4"></div>
+  <div class="rect5"></div>
+</div>-->
+
     <!-- Container -->
     <div ng-cloak class="container cloudplayer">
       <cloudplayer-header></cloudplayer-header>
@@ -35,18 +47,20 @@
 </body>
 
 <!-- Vendors -->
+<script src="bower_components/please-wait/build/please-wait.js"></script>
 <script src="bower_components/jquery/dist/jquery.js"></script>
 <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
 <script src="bower_components/angular/angular.js"></script>
 <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
 <script src="bower_components/angular-resource/angular-resource.js"></script>
 <script src="bower_components/angular-cookies/angular-cookies.js"></script>
-<script src="bower_components/angular-animate/angular-animate.min.js"></script>
+<script src="bower_components/toastr/toastr.js"></script>
 
 <!-- App <-> minified -->
+<script src="assets/javascript/load-screen.js"></script>
+<script src="assets/javascript/toastr.js"></script>
 <script src="build/app/javascript/cloudplayer-v0.1.0.js"></script>
 
 <!-- Assets -->
-
 
 </html>

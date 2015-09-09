@@ -1,5 +1,5 @@
 (function(angular){
-    angular.module('Directives').directive('searchPanel', searchPanelDirFn)
+    angular.module('cpDirectives').directive('searchPanel', searchPanelDirFn)
     function searchPanelDirFn(){
         return{
             restrict: 'EA',
