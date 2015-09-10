@@ -1,8 +1,8 @@
 (function (angular) {
     ////AngularJS Code ////
-    angular.module('cpControllers').controller('mainPageController', ['$scope', '$location', '$sce', 'songHistoryFactory', 'appNotify', mainPageController]);
+    angular.module('cpControllers').controller('mainPageController', ['$scope', '$location', '$sce', 'songHistoryFactory', 'notifier', mainPageController]);
 
-    function mainPageController($scope, $location, $sce, songHistoryFactory, appNotify) {
+    function mainPageController($scope, $location, $sce, songHistoryFactory, notifier) {
         console.log("inside MainController");
         this.scope = $scope;
         this.defualtPicPath = "assets/images/soundcloud.png"
@@ -61,8 +61,8 @@
             console.log(self.selectedWidgetUrl)
             console.log("isSelected? " + this.isSelected)
             this.panelFoldSelector = true;
-            appNotify.notify("Now Playing: " + selectedSong.title)
-        }
+            notifier.clickedSongnotify(selectedSong);
+        } 
         this.onClickNextBtn = function () {
             var self = this;
             console.log(this.searchResult)
