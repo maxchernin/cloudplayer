@@ -4,7 +4,7 @@
     function playerDirFn(){
         return{
             restrict: 'EA',
-            templateUrl: 'app/shared/player/cloud-player.html'
+            templateUrl: 'app/shared/player/cloud-player.html',
         }
     }
 })(angular);

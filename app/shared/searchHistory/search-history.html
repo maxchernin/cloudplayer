@@ -4,7 +4,7 @@
         <div class="panel-body">
            
        <table>
-            <tr ng-repeat="searchedItem in mainPageCtrl.recents track by $index">
+            <tr ng-repeat="searchedItem in recents track by $index">
                 <td>{{searchedItem.name}}</td>
                 <td> <span class="label " style="font-size:15px; color:#A5D8FF;">{{searchedItem.time}}</span></td>
                 <td>{{searchedItem.date}}</td>
