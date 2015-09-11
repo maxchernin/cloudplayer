@@ -12,7 +12,7 @@
         this.searchResult;
         this.listViewSelector;
         this.panelFoldSelector = false;
-        this.userInput = "ACDC"; // just for initial loading
+        this.userInput = "Red hot chilli peppers"; // just for initial loading
         var nextPage = ''
         var pageSize = 9;
         var userInput = '';
