@@ -15,4 +15,5 @@ Filetree:
     ├───searchHistory
     └───searchPanel
         ├───listSort
-        └───tileSort```
+        └───tileSort
+```
