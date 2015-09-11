@@ -20,10 +20,11 @@
             return recents;
         }
 //        adds the recent song recived from the controller (userinput ng model) to the array, then saves the array as the value stored inside the recentSearches cookie
-        function addSongToRecents(destSong, searchDatetime){
+        function addSongToRecents(destSong, searchDatetime, destUrl){
             var savedObject = {name: destSong,
                               date: searchDatetime.getDate() + "/" + searchDatetime.getMonth() + "/" + searchDatetime.getFullYear(),
-                               time: searchDatetime.getUTCHours() + ":" + searchDatetime.getUTCMinutes()
+                               time: searchDatetime.getUTCHours() + ":" + searchDatetime.getUTCMinutes(),
+                               url: destUrl
                               }
         if (recents.length >= historyLimit){
                 recents.pop();

@@ -10,12 +10,11 @@
         this.userInput = "ACDC"; // just for initial loading
         this.listViewSelector;
         this.panelFoldSelector = false;
-        this.isSelected = false;
+        this.isTrackSelected = false;
         this.searchResult;
         this.selectedWidgetUrl;
         this.defualtPicPath = "assets/images/soundcloud.png";
         this.getDatetime = new Date();
-        
         this.getSongs = function () { //        this method retrives all songs with string taken form input field plus saves the search
             console.log("getSongs() running...")
             console.log("search added: " + this.userInput)
@@ -27,7 +26,7 @@
             }, function (tracks) {
                 self.setResults(tracks)
             });
-            songHistoryFactory.addSongToRecents(this.userInput, this.getDatetime)
+            songHistoryFactory.addSongToRecents(this.userInput, this.getDatetime, this.selectedWidgetUrl)
             console.log("Song List:");
             console.log(this.searchResult);
             this.listViewSelector = songHistoryFactory.getListViewSelector();
@@ -50,9 +49,9 @@
         this.selectSong = function (selectedSong) {
                 console.log("selectSong(selectedSong) running... ")
                 this.selected = selectedSong;
-                this.isSelected = true;
-                this.selectedWidgetUrl = $sce.trustAsResourceUrl("https://w.soundcloud.com/player/?url=" + this.selected.uri + "&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true")
-                console.log(self.selectedWidgetUrl)
+                this.isTrackSelected = true;
+                this.selectedWidgetUrl = $sce.trustAsResourceUrl("https://w.soundcloud.com/player/?url=" + this.selected.uri + "&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true");
+                console.log("https://w.soundcloud.com/player/?url=" + this.selected.uri + "&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true")
                 console.log("isSelected? " + this.isSelected)
                 this.panelFoldSelector = true;
                 notifier.clickedSongnotify(selectedSong);

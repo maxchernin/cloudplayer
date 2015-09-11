@@ -2,7 +2,9 @@
         <div class="panel panel-default playerpanel custpanel">
             <div class="panel-heading"  style="text-align:center">Play</div>
             <div class="panel-body">
-                <iframe width="100%" height="450" scrolling="no" frameborder="no" ng-if="isSelected" src="{{selectedWidgetUrl}}"></iframe>
+            
+<!--               @@TODO bad functionality - needs sorting - using the searchpanel controller -->
+                <iframe width="100%" height="450" scrolling="no" frameborder="no" ng-if="searchPanelCtrl.isTrackSelected" src="{{searchPanelCtrl.selectedWidgetUrl}}"></iframe>
             </div>
             <!--  ./ panel body-->
 

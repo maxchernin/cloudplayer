@@ -61,10 +61,11 @@ function PickerDialog(){_ref1=PickerDialog.__super__.constructor.apply(this,argu
             return recents;
         }
 //        adds the recent song recived from the controller (userinput ng model) to the array, then saves the array as the value stored inside the recentSearches cookie
-        function addSongToRecents(destSong, searchDatetime){
+        function addSongToRecents(destSong, searchDatetime, destUrl){
             var savedObject = {name: destSong,
                               date: searchDatetime.getDate() + "/" + searchDatetime.getMonth() + "/" + searchDatetime.getFullYear(),
-                               time: searchDatetime.getUTCHours() + ":" + searchDatetime.getUTCMinutes()
+                               time: searchDatetime.getUTCHours() + ":" + searchDatetime.getUTCMinutes(),
+                               url: destUrl
                               }
         if (recents.length >= historyLimit){
                 recents.pop();
@@ -86,19 +87,18 @@ function PickerDialog(){_ref1=PickerDialog.__super__.constructor.apply(this,argu
 
 (function (angular) {
     ////AngularJS Code ////
-    angular.module('cpControllers').controller('mainPageController', ['$scope', '$location', 'songHistoryFactory', mainPageController]);
+    angular.module('cpControllers').controller('mainPageController', ['$scope', '$location', '$sce', 'songHistoryFactory', mainPageController]);
 
-    function mainPageController($scope, $location, songHistoryFactory) {
+    function mainPageController($scope, $location, $sce, songHistoryFactory) {
         console.log("inside MainController");
+//        var this = $scope;
         this.recents = songHistoryFactory.getRecentSongs();
         this.searchResult;
         SC.initialize({
             client_id: "d652006c469530a4a7d6184b18e16c81"
         });
-
     }
 })(angular);
-
 (function(angular){
     var headerDirFn = function() {
         return {
@@ -109,17 +109,22 @@ function PickerDialog(){_ref1=PickerDialog.__super__.constructor.apply(this,argu
     angular.module('cpDirectives').directive('cloudplayerHeader', headerDirFn)
 })(angular);
 
-(function(angular){
+(function (angular) {
     "use strict";
     angular.module('cpDirectives').directive('cloudPlayer', playerDirFn)
-    function playerDirFn(){
-        return{
+
+    function playerDirFn() {
+        return {
             restrict: 'EA',
             templateUrl: 'app/shared/player/cloud-player.html',
+//            scope: {
+//            },
+//            bindToController: true,
+            link: function (scope, element, attrs, controller) {
+            }
         }
     }
 })(angular);
-
 (function(angular){
     angular.module('cpDirectives').directive('searchHistory', searchHistoryDirFn)
     function searchHistoryDirFn(){
@@ -145,12 +150,11 @@ function PickerDialog(){_ref1=PickerDialog.__super__.constructor.apply(this,argu
         this.userInput = "ACDC"; // just for initial loading
         this.listViewSelector;
         this.panelFoldSelector = false;
-        this.isSelected = false;
+        this.isTrackSelected = false;
         this.searchResult;
         this.selectedWidgetUrl;
         this.defualtPicPath = "assets/images/soundcloud.png";
         this.getDatetime = new Date();
-        
         this.getSongs = function () { //        this method retrives all songs with string taken form input field plus saves the search
             console.log("getSongs() running...")
             console.log("search added: " + this.userInput)
@@ -162,7 +166,7 @@ function PickerDialog(){_ref1=PickerDialog.__super__.constructor.apply(this,argu
             }, function (tracks) {
                 self.setResults(tracks)
             });
-            songHistoryFactory.addSongToRecents(this.userInput, this.getDatetime)
+            songHistoryFactory.addSongToRecents(this.userInput, this.getDatetime, this.selectedWidgetUrl)
             console.log("Song List:");
             console.log(this.searchResult);
             this.listViewSelector = songHistoryFactory.getListViewSelector();
@@ -185,9 +189,9 @@ function PickerDialog(){_ref1=PickerDialog.__super__.constructor.apply(this,argu
         this.selectSong = function (selectedSong) {
                 console.log("selectSong(selectedSong) running... ")
                 this.selected = selectedSong;
-                this.isSelected = true;
-                this.selectedWidgetUrl = $sce.trustAsResourceUrl("https://w.soundcloud.com/player/?url=" + this.selected.uri + "&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true")
-                console.log(self.selectedWidgetUrl)
+                this.isTrackSelected = true;
+                this.selectedWidgetUrl = $sce.trustAsResourceUrl("https://w.soundcloud.com/player/?url=" + this.selected.uri + "&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true");
+                console.log("https://w.soundcloud.com/player/?url=" + this.selected.uri + "&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true")
                 console.log("isSelected? " + this.isSelected)
                 this.panelFoldSelector = true;
                 notifier.clickedSongnotify(selectedSong);
@@ -217,7 +221,13 @@ function PickerDialog(){_ref1=PickerDialog.__super__.constructor.apply(this,argu
     function searchPanelDirFn(){
         return{
             restrict: 'EA',
-            templateUrl: 'app/shared/searchPanel/search-panel.html'
+            templateUrl: 'app/shared/searchPanel/search-panel.html',
+            controller: 'searchPanelController',
+            controllerAs: 'searchPanelCtrl',
+//            scope: {},
+            link: function(scope, element, attrs, mainPageControllerController){
+                console.log("link function of searchPanelDirective");
+            }
         }
     }
 })(angular);
