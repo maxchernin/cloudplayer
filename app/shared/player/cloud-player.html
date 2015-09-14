@@ -1,15 +1,14 @@
-        <div class="col-md-4 col-sm-4 col-xs-4">
-        <div class="panel panel-default playerpanel custpanel">
-            <div class="panel-heading"  style="text-align:center">Play</div>
-            <div class="panel-body">
-            
-<!--               @@TODO bad functionality - needs sorting - using the searchpanel controller -->
-                <iframe width="100%" height="450" scrolling="no" frameborder="no" ng-if="searchPanelCtrl.isTrackSelected" src="{{searchPanelCtrl.selectedWidgetUrl}}"></iframe>
-            </div>
-            <!--  ./ panel body-->
-
+<div class="col-md-4 col-sm-4 col-xs-4">
+    <div class="panel panel-default playerpanel custpanel">
+        <div class="panel-heading" style="text-align:center">Play</div>
+        <div class="panel-body">
+            <!--              since this directive and the search diretive have different scope, but are siblings - this directive acces the url data from the parent directive using emits and broadcasts-->
+            <iframe width="100%" height="450" scrolling="no" frameborder="no" ng-if="true" src="{{cloudPlayerCtrl.selectedWidgetUrl}}"></iframe>
         </div>
-        <!--   ./panel-->
+        <!--  ./ panel body-->
 
     </div>
+    <!--   ./panel-->
+
+</div>
 <!--        ./ col #2 -->

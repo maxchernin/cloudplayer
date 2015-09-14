@@ -30,7 +30,7 @@ gulp.task('images', function () {
         }))
         .pipe(gulp.dest('build/assets/images'))
         .pipe(notify({
-            message: 'Images task complete'
+            message: 'Images task complete' //Will notifiy each image minification
         }));
 });
 gulp.task('clean', function (cb) {
@@ -39,6 +39,7 @@ gulp.task('clean', function (cb) {
 
 gulp.task('default', ['clean'], function () {
     gulp.start('scripts', 'images', 'watch');
+
 });
 gulp.task('watch', function () {
     // Watch .scss files

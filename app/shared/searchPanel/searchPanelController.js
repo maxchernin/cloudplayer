@@ -3,75 +3,85 @@
 
     function searchPanelController($scope, $location, $sce, songHistoryFactory, notifier) {
         console.log("search panel directive controller");
-        this.scope = $scope;
+        var vm = this;
+        vm.scope = $scope;
         var nextPage = ''
         var pageSize = 9;
-        var userInput = '';
-        this.userInput = "ACDC"; // just for initial loading
-        this.listViewSelector;
-        this.panelFoldSelector = false;
-        this.isTrackSelected = false;
-        this.searchResult;
-        this.selectedWidgetUrl;
-        this.defualtPicPath = "assets/images/soundcloud.png";
-        this.getDatetime = new Date();
-        this.getSongs = function () { //        this method retrives all songs with string taken form input field plus saves the search
+        vm.userInput = "ACDC"; // just for initial loading
+        vm.listViewSelector;
+        vm.panelFoldSelector = false;
+        vm.isTrackSelected = false;
+        vm.searchResult;
+        vm.selectedWidgetUrl;
+        vm.defualtPicPath = "assets/images/soundcloud.png";
+        vm.getDatetime = new Date();
+        vm.getSongs = getSongs;
+        vm.setResults = setResults;
+        vm.selectSong = selectSong;
+        vm.onClickNextBtn = onClickNextBtn;
+        vm.changeView = changeView;
+
+        function getSongs() { //        this method retrives all songs with string taken form input field plus saves the search
             console.log("getSongs() running...")
-            console.log("search added: " + this.userInput)
+            console.log("search added: " + vm.userInput)
             var self = this
             SC.get('/tracks', {
-                q: this.userInput,
+                q: self.userInput,
                 'limit': pageSize,
                 'linked_partitioning': 1,
             }, function (tracks) {
-                self.setResults(tracks)
+                vm.setResults(tracks)
             });
-            songHistoryFactory.addSongToRecents(this.userInput, this.getDatetime, this.selectedWidgetUrl)
+            songHistoryFactory.addSongToRecents(vm.userInput, vm.getDatetime, vm.selectedWidgetUrl)
             console.log("Song List:");
-            console.log(this.searchResult);
-            this.listViewSelector = songHistoryFactory.getListViewSelector();
+            console.log(vm.searchResult);
+            vm.listViewSelector = songHistoryFactory.getListViewSelector();
+            notifier.displayGeneralInfoMsg("Results for " + vm.userInput);
         }
-        this.setResults = function (tracks) {
+
+        function setResults(tracks) {
             var self = this
             console.log("setResults(tracks) running");
-            this.searchResult = tracks.collection;
-            this.searchResult.forEach(function (item) {
+            vm.searchResult = tracks.collection;
+            vm.searchResult.forEach(function (item) {
                 if (item.artwork_url == null) {
-                    item.artwork_url = self.defualtPicPath
+                    item.artwork_url = vm.defualtPicPath
                 }
             })
-            this.scope.$apply();
-            console.log(this.searchResult)
+            vm.scope.$apply();
+            console.log(self.searchResult)
                 //                this.scope.$apply()
             nextPage = tracks.next_href;
             console.log("setResults finished.")
         }
-        this.selectSong = function (selectedSong) {
-                console.log("selectSong(selectedSong) running... ")
-                this.selected = selectedSong;
-                this.isTrackSelected = true;
-                this.selectedWidgetUrl = $sce.trustAsResourceUrl("https://w.soundcloud.com/player/?url=" + this.selected.uri + "&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true");
-                console.log("https://w.soundcloud.com/player/?url=" + this.selected.uri + "&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true")
-                console.log("isSelected? " + this.isSelected)
-                this.panelFoldSelector = true;
-                notifier.clickedSongnotify(selectedSong);
-            } // sets selected song by user click on a song item from list, also sets a defualt photo if no artwork exists
-         this.onClickNextBtn = function () {
+
+        function selectSong(selectedSong) {
+            console.log("selectSong(selectedSong) running... ")
+            vm.isTrackSelected = true;
+            vm.selectedWidgetUrl = $sce.trustAsResourceUrl("https://w.soundcloud.com/player/?url=" + selectedSong.uri + "&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true");
+            console.log("https://w.soundcloud.com/player/?url=" + selectedSong.uri + "&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true")
+            console.log("isSelected? " + vm.isSelected)
+//           vm.scope.$parent.mainPageCtrl.selectedWidgetUrl = vm.selectedWidgetUrl;
+            vm.scope.$emit('trackUrlSelectedEvent', vm.selectedWidgetUrl, true);
+            vm.panelFoldSelector = true;
+            notifier.clickedSongnotify(selectedSong);
+        } // sets selected song by user click on a song item from list, also sets a defualt photo if no artwork exists
+        function onClickNextBtn() {
             var self = this;
-            console.log(this.searchResult)
-            console.log(this.selectedWidgetUrl)
+            console.log(vm.searchResult)
+            console.log(vm.selectedWidgetUrl)
             console.log("onClickNextBtn() running...")
             SC.get(nextPage, function (tracks) {
-                self.setResults(tracks);
-
+                vm.setResults(tracks);
             })
         }
-        this.changeView = function () {
+
+        function changeView() {
             console.log(this.panelFoldSelector)
             console.log("changeView running...")
             songHistoryFactory.setListViewSelector()
-            this.listViewSelector = songHistoryFactory.getListViewSelector();
-            console.log("listviewselector= " + this.listViewSelector)
+            vm.listViewSelector = songHistoryFactory.getListViewSelector();
+            console.log("listviewselector= " + vm.listViewSelector)
 
         }
     }
