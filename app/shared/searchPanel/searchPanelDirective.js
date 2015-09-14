@@ -6,7 +6,7 @@
             templateUrl: 'app/shared/searchPanel/search-panel.html',
             controller: 'searchPanelController',
             controllerAs: 'searchPanelCtrl',
-//            scope: {},
+            scope: true,
             link: function(scope, element, attrs, mainPageControllerController){
                 console.log("link function of searchPanelDirective");
             }

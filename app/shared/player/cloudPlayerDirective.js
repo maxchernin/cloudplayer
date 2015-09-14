@@ -6,11 +6,12 @@
         return {
             restrict: 'EA',
             templateUrl: 'app/shared/player/cloud-player.html',
-//            scope: {
-//            },
-//            bindToController: true,
+            controller: 'cloudPlayerController',
+            controllerAs: 'cloudPlayerCtrl',
+            scope: true,
             link: function (scope, element, attrs, controller) {
             }
         }
     }
 })(angular);
+//t
