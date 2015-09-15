@@ -4,40 +4,28 @@
 <head>
     <meta charset="UTF-8">
     <title>cloudplayer by Max Chernin</title>
-    <!--    Core CSS    -->
+<!--      favicon-->
+       <link href="/assets/images/favicon.ico" rel="icon" type="image/x-icon" />
+<!--    Core CSS    -->
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
     <!-- Animate CSS -->
-    <link rel="stylesheet" href="assets/css/animate.css">
     <link rel="stylesheet" href="bower_components/please-wait/build/please-wait.css">
     <link rel="stylesheet" href="bower_components/toastr/toastr.css">
-    <!--    Custom Css file   -->
+<!--    Custom Css file   -->
     <link rel="stylesheet" href="assets/css/custom.css">
 <!--    custom fonts-->
 <link href='https://fonts.googleapis.com/css?family=Lobster|Exo+2:400,600italic|Patua+One' rel='stylesheet' type='text/css'>
-
 </head>
 
-<!--@@change-->
 <body class="body">
-<!--   <img src="assets/images/loading.gif" ng-hide="true" style="align:center">  //replaced by loading-screen.js-->
-
-<!-- <div class="spinner" ng-hide="true">
-  <div class="rect1"></div>
-  <div class="rect2"></div>
-  <div class="rect3"></div>
-  <div class="rect4"></div>
-  <div class="rect5"></div>
-</div>-->
 
     <!-- Container -->
     <div ng-cloak class="container cloudplayer">
       <cloudplayer-header></cloudplayer-header>
         <!--    header directive-->
-        
          <div ui-view class="custom-font"></div>
         <!-- goes to mainpage.html-->
-   
     </div>
     <!-- ./ container-->
 
