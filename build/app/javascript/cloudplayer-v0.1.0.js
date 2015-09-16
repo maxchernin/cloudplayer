@@ -128,36 +128,6 @@ function PickerDialog(){_ref1=PickerDialog.__super__.constructor.apply(this,argu
     angular.module('cpDirectives').directive('cloudplayerHeader', headerDirFn)
 })(angular);
 
-(function (angular) {
-    "use strict";
-    angular.module('cpDirectives').directive('cloudPlayer', playerDirFn)
-
-    function playerDirFn() {
-        return {
-            restrict: 'EA',
-            templateUrl: 'app/shared/player/cloud-player.html',
-            controller: 'cloudPlayerController',
-            controllerAs: 'cloudPlayerCtrl',
-            scope: true,
-            link: function (scope, element, attrs, controller) {
-            }
-        }
-    }
-})(angular);
-(function (angular) {
-    angular.module('cpControllers').controller('cloudPlayerController', ['$scope', cloudPlayerController]);
-
-    function cloudPlayerController($scope) {
-        var vm = this;
-        vm.scope = $scope;
-        vm.trackSelected = false;
-        console.log(vm.scope.$parent.mainPageCtrl.selectedWidgetUrl)
-        vm.scope.$on('tackSelectedBroadcastEvent',  function( event, data ){ //listens to searchpanel emit event, and broadcasts to cloudplayer controller that listens to the new event
-        vm.trackSelected = true;
-         vm.selectedWidgetUrl = data;
-        });
-    }
-})(angular);
 (function(angular){
     angular.module('cpDirectives').directive('searchHistory', searchHistoryDirFn)
     function searchHistoryDirFn(){
@@ -267,6 +237,36 @@ function PickerDialog(){_ref1=PickerDialog.__super__.constructor.apply(this,argu
                 console.log("link function of searchPanelDirective");
             }
         }
+    }
+})(angular);
+(function (angular) {
+    "use strict";
+    angular.module('cpDirectives').directive('cloudPlayer', playerDirFn)
+
+    function playerDirFn() {
+        return {
+            restrict: 'EA',
+            templateUrl: 'app/shared/player/cloud-player.html',
+            controller: 'cloudPlayerController',
+            controllerAs: 'cloudPlayerCtrl',
+            scope: true,
+            link: function (scope, element, attrs, controller) {
+            }
+        }
+    }
+})(angular);
+(function (angular) {
+    angular.module('cpControllers').controller('cloudPlayerController', ['$scope', cloudPlayerController]);
+
+    function cloudPlayerController($scope) {
+        var vm = this;
+        vm.scope = $scope;
+        vm.trackSelected = false;
+        console.log(vm.scope.$parent.mainPageCtrl.selectedWidgetUrl)
+        vm.scope.$on('tackSelectedBroadcastEvent',  function( event, data ){ //listens to searchpanel emit event, and broadcasts to cloudplayer controller that listens to the new event
+        vm.trackSelected = true;
+         vm.selectedWidgetUrl = data;
+        });
     }
 })(angular);
 (function(angular){
