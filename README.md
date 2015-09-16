@@ -6,7 +6,7 @@ will be edited soon.
 meanwhile, this is the site - http://cloudplayer.maxchernin.net
 
 Filetree:
-
+```
 ├───components
 │   └───mainPage
 ├───services
@@ -17,4 +17,4 @@ Filetree:
     └───searchPanel
         ├───listSort
         └───tileSort
-
+```
