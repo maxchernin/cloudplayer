@@ -47,50 +47,53 @@ var Recorder={swfObject:null,_callbacks:{},_events:{},_initialized:false,options
 function PickerDialog(){_ref1=PickerDialog.__super__.constructor.apply(this,arguments);return _ref1}PickerDialog.prototype.PARAM_KEYS=["client_id","redirect_uri"];PickerDialog.prototype.name="picker";PickerDialog.prototype.requiresAuthentication=true;PickerDialog.prototype.handleReturn=function(){var params,_this=this;params=this.paramsFromWindow();if(params.action==="logout"){SC.accessToken(null);this.open();return false}else if(params.track_uri!=null){if(!this.options.retainWindow){this.options.window.close()}SC.get(params.track_uri,function(track){return _this.options.callback({track:track})});return true}};return PickerDialog}(AbstractDialog),ConnectDialog:ConnectDialog=function(_super){__extends(ConnectDialog,_super);function ConnectDialog(){_ref2=ConnectDialog.__super__.constructor.apply(this,arguments);return _ref2}ConnectDialog.prototype.PARAM_KEYS=["client_id","redirect_uri","client_secret","response_type","scope","display"];ConnectDialog.prototype.name="connect";ConnectDialog.prototype.buildURI=function(){var uri;uri=ConnectDialog.__super__.buildURI.apply(this,arguments);uri.scheme="https";uri.host="soundcloud.com";uri.path="/connect";uri.query=uri.fragment;uri.fragment={};return uri};return ConnectDialog}(AbstractDialog)}});SC.Dialog._handleInPopupContext();window.SC=SC.Helper.merge(SC||{},{Loader:{States:{UNLOADED:1,LOADING:2,READY:3},Package:function(name,loadFunction){return{name:name,callbacks:[],loadFunction:loadFunction,state:SC.Loader.States.UNLOADED,addCallback:function(fn){return this.callbacks.push(fn)},runCallbacks:function(){var callback,_i,_len,_ref3;_ref3=this.callbacks;for(_i=0,_len=_ref3.length;_i<_len;_i++){callback=_ref3[_i];callback.apply(this)}return this.callbacks=[]},setReady:function(){this.state=SC.Loader.States.READY;return this.runCallbacks()},load:function(){this.state=SC.Loader.States.LOADING;return this.loadFunction.apply(this)},whenReady:function(callback){switch(this.state){case SC.Loader.States.UNLOADED:this.addCallback(callback);return this.load();case SC.Loader.States.LOADING:return this.addCallback(callback);case SC.Loader.States.READY:return callback()}}}},packages:{},registerPackage:function(pkg){return this.packages[pkg.name]=pkg}}});window.SC=SC.Helper.merge(SC||{},{oEmbed:function(trackUrl,query,callback){var element,uri,_this=this;if(callback==null){callback=query;query=void 0}query||(query={});query.url=trackUrl;uri=new SC.URI(window.location.protocol+"//"+SC.hostname()+"/oembed.json");uri.query=query;if(callback.nodeType!==void 0&&callback.nodeType===1){element=callback;callback=function(oembed){return element.innerHTML=oembed.html}}return this._request("GET",uri.toString(),null,null,function(responseText,xhr){var response;response=SC.Helper.responseHandler(responseText,xhr);return callback(response.json,response.error)})}});window.SC=SC.Helper.merge(SC||{},{_recorderSwfPath:"/recorder.js/recorder-0.9.0.swf",whenRecordingReady:function(callback){return SC.Loader.packages.recording.whenReady(callback)},record:function(options){if(options==null){options={}}return this.whenRecordingReady(function(){return Recorder.record(options)})},recordStop:function(options){if(options==null){options={}}return Recorder.stop()},recordPlay:function(options){if(options==null){options={}}return Recorder.play(options)},recordUpload:function(query,callback){var flattenedParams,uri;if(query==null){query={}}uri=SC.prepareRequestURI("/tracks",query);uri.query.format="json";SC.Helper.setFlashStatusCodeMaps(uri.query);flattenedParams=uri.flattenParams(uri.query);return Recorder.upload({method:"POST",url:"https://"+this.hostname("api")+"/tracks",audioParam:"track[asset_data]",params:flattenedParams,success:function(responseText){var response;response=SC.Helper.responseHandler(responseText);return callback(response.json,response.error)}})}});SC.Loader.registerPackage(new SC.Loader.Package("recording",function(){if(Recorder.flashInterface()){return SC.Loader.packages.recording.setReady()}else{return Recorder.initialize({swfSrc:SC._baseUrl+SC._recorderSwfPath+"?"+SC._version,initialized:function(){return SC.Loader.packages.recording.setReady()}})}}));window.SC=SC.Helper.merge(SC||{},{storage:function(){return this._fakeStorage||(this._fakeStorage=new SC.Helper.FakeStorage)}});Player=function(){function Player(_player){this._player=_player}Player.prototype.play=function(position){if(this._player.getState()==="loading"||this._player.getState()==="initialize"){return this._player.on("stateChange",function(state){if(state==="idle"){return this.play()}})}else{return this._player.play()}};Player.prototype.stop=function(){this._player.pause();return this._player.seek(0)};Player.prototype.pause=function(){return this._player.pause()};Player.prototype.seek=function(ms){return this._player.seek(ms)};Player.prototype.setVolume=function(volume){return this._player.setVolume(volume)};Player.prototype.getVolume=function(){return this._player.getVolume()};Player.prototype.getType=function(){return this._player.getType()};Player.prototype.getCurrentPosition=function(){return this._player.getCurrentPosition()};Player.prototype.getLoadedPosition=function(){return this._player.getLoadedPosition()};Player.prototype.getDuration=function(){return this._player.getDuration()};Player.prototype.getState=function(){return this._player.getState()};return Player}();window.SC=SC.Helper.merge(SC||{},{whenStreamingReady:function(callback){return SC.Loader.packages.streaming.whenReady(callback)},_isNumeric:function(idOrUrl){return idOrUrl.toString().match(/^\d.*$/)},_prepareTrackUrl:function(idOrUrl){var preparedUrl,url;url=this._isNumeric(idOrUrl)?"/tracks/"+idOrUrl:idOrUrl;preparedUrl=SC.prepareRequestURI(url);return preparedUrl.toString()},_prepareStreamUrl:function(idOrUrl){var preparedUrl,url;url=this._isNumeric(idOrUrl)?"/tracks/"+idOrUrl:idOrUrl;preparedUrl=SC.prepareRequestURI(url);if(!preparedUrl.path.match(/\/stream/)){preparedUrl.path+="/streams"}return preparedUrl.toString()},_setOnPositionListenersForComments:function(player,comments,callback){var group;group=SC.Helper.groupBy(comments,"timestamp");return player._player.on("positionChange",function(current,loaded,duration){var collection,key,_i,_len,_ref3;collection=[];_ref3=Object.keys(group);for(_i=0,_len=_ref3.length;_i<_len;_i++){key=_ref3[_i];if(key>parseInt(current,10)){break}collection.push(group[key]);delete group[key]}collection=[].concat.apply([],collection);return callback(collection)})},stream:function(idOrUrl,optionsOrCallback,callback){var a,options,stream_url,track_url;a=SC.Helper.extractOptionsAndCallbackArguments(optionsOrCallback,callback);options=a.options;callback=a.callback;options.id="T"+idOrUrl+"-"+Math.random();track_url=this._prepareTrackUrl(idOrUrl);stream_url=this._prepareStreamUrl(idOrUrl);return SC.whenStreamingReady(function(){return SC.get(track_url,function(track){options.duration=track.duration;return SC.get(stream_url,function(streams){var createAndCallback,ontimedcommentsCallback,_this=this;options.src=streams.http_mp3_128_url||streams.rtmp_mp3_128_url;createAndCallback=function(options){var player;player=new Player(audioManager.createAudioPlayer(options));if(callback!=null){callback(player)}return player};if(ontimedcommentsCallback=options.ontimedcomments){delete options.ontimedcomments;return SC._getAll(track_url+"/comments",function(comments){var player;player=createAndCallback(options);return SC._setOnPositionListenersForComments(player,comments,ontimedcommentsCallback)})}else{return createAndCallback(options)}})})})},streamStopAll:function(){var player,_i,_len,_ref3,_results;if(window.audioManager!=null){_ref3=window.audioManager._players;_results=[];for(_i=0,_len=_ref3.length;_i<_len;_i++){player=_ref3[_i];player.pause();_results.push(player.seek(0))}return _results}}});SC.Loader.registerPackage(new SC.Loader.Package("streaming",function(){var audioManagerURL;if(window.audioManager!=null){return SC.Loader.packages.streaming.setReady()}else{audioManagerURL=SC._baseUrl+"/audiomanager";return SC.Helper.loadJavascript(audioManagerURL+"/audiomanager.js",function(){window.audioManager=new AudioManager({flashAudioPath:SC._baseUrl+"/audiomanager/flashAudio.swf"});return SC.Loader.packages.streaming.setReady()})}}))}.call(this);
 (function (angular) {
     angular.module('cpServices')
-        .factory('songHistoryFactory', ['$http', '$cookies', songHistoryFactory]);
+        .factory('songHistoryFactory', ['$cookies', songHistoryFactory]);
 
-    function songHistoryFactory($http /*for later use */, $cookies) {
-           var recents = $cookies.getObject('recentSearches') || [];
-        var listViewSelector = $cookies.getObject('viewPicker')
-        if (listViewSelector == undefined){
+    function songHistoryFactory($cookies) {
+        var recents = $cookies.getObject('recentSearches') || [];
+        var listViewSelector = $cookies.getObject('viewPicker');
+        var historyLimit = 5;
+        var getDatetime = new Date();
+        console.log("view selector from serever " + listViewSelector)
+        if (listViewSelector == undefined) {
             listViewSelector = true;
         }
-        console.log("from serever " + listViewSelector)
-        var historyLimit = 5;
         return {
-          getRecentSongs:getRecentSongs,
-            addSongToRecents:addSongToRecents,
-            setListViewSelector:setListViewSelector,
-            getListViewSelector:getListViewSelector
+            getRecentSongs: getRecentSongs,
+            addSongToRecents: addSongToRecents,
+            setListViewSelector: setListViewSelector,
+            getListViewSelector: getListViewSelector
         }
-        function getRecentSongs (){
+
+        function getRecentSongs() {
             return recents;
         }
-//        adds the recent song recived from the controller (userinput ng model) to the array, then saves the array as the value stored inside the recentSearches cookie
-        function addSongToRecents(destSong, searchDatetime, destUrl){
-            var savedObject = {name: destSong,
-                              date: searchDatetime.getDate() + "/" + searchDatetime.getMonth() + "/" + searchDatetime.getFullYear(),
-                               time: searchDatetime.getUTCHours() + ":" + searchDatetime.getUTCMinutes(),
-                               url: destUrl
-                              }
-        if (recents.length >= historyLimit){
+
+        function addSongToRecents(destSong, destUrl) { //        adds the recent song recived from the controller (userinput ng model) to the array, then saves the array as the value stored inside the recentSearches cookie
+            var savedObject = {
+                name: destSong,
+                date: getDatetime.getDate() + "/" + (getDatetime.getMonth() + 1) + "/" + getDatetime.getFullYear(),
+                time: getDatetime.getUTCHours() + 3 + ":" + getDatetime.getUTCMinutes(),
+                url: destUrl
+            }
+            if (recents.length >= historyLimit) {
                 recents.pop();
             }
             recents.unshift(savedObject);
             console.log(recents)
             $cookies.putObject('recentSearches', recents);
         }
-//        changes the listViewSelector param then saves it as cookie value
-        function setListViewSelector(destSelector){
+
+        function setListViewSelector(destSelector) { //  changes the listViewSelector param then saves it as cookie value
             listViewSelector = !listViewSelector;
             $cookies.putObject('viewPicker', listViewSelector)
         }
-        function getListViewSelector(){
+
+        function getListViewSelector() {
             return listViewSelector;
         }
     }
 })(angular);
-
 (function (angular) {
     ////AngularJS Code ////
     angular.module('cpControllers').controller('mainPageController', ['$scope', '$location', '$sce', 'songHistoryFactory', mainPageController]);
@@ -100,19 +103,26 @@ function PickerDialog(){_ref1=PickerDialog.__super__.constructor.apply(this,argu
         var vm = this
         vm.scope = $scope;
         vm.recents = songHistoryFactory.getRecentSongs();
-        vm.scope.$on('trackUrlSelectedEvent', function( event, data ){
-  vm.scope.$broadcast( 'trackUrlBroadcastEvent', data );
+        vm.scope.$on('tackSelectedEmitEvent', function( event, data ){
+  vm.scope.$broadcast( 'tackSelectedBroadcastEvent', data ); //recives url - emit from searchpanel controller and broadcasts down to cloud player (listener)
 });
         SC.initialize({
             client_id: "d652006c469530a4a7d6184b18e16c81"
         });
     }
 })(angular);
+
 (function(angular){
     var headerDirFn = function() {
         return {
             restrict: 'E',
-            templateUrl: 'app/shared/header/header.html'
+            templateUrl: 'app/shared/header/header.html',
+            scope: {
+                title:'@',
+                description:'@'
+            },
+            link: function(scope, element, attrs){
+            }
         }
     }
     angular.module('cpDirectives').directive('cloudplayerHeader', headerDirFn)
@@ -134,15 +144,16 @@ function PickerDialog(){_ref1=PickerDialog.__super__.constructor.apply(this,argu
         }
     }
 })(angular);
-//t
 (function (angular) {
-    angular.module('cpControllers').controller('cloudPlayerController', ['$scope', '$location', '$sce', 'songHistoryFactory', 'notifier', cloudPlayerController]);
+    angular.module('cpControllers').controller('cloudPlayerController', ['$scope', cloudPlayerController]);
 
-    function cloudPlayerController($scope, $location, $sce, songHistoryFactory, notifier) {
+    function cloudPlayerController($scope) {
         var vm = this;
         vm.scope = $scope;
+        vm.trackSelected = false;
         console.log(vm.scope.$parent.mainPageCtrl.selectedWidgetUrl)
-        vm.scope.$on('trackUrlBroadcastEvent',  function( event, data ){
+        vm.scope.$on('tackSelectedBroadcastEvent',  function( event, data ){ //listens to searchpanel emit event, and broadcasts to cloudplayer controller that listens to the new event
+        vm.trackSelected = true;
          vm.selectedWidgetUrl = data;
         });
     }
@@ -167,23 +178,22 @@ function PickerDialog(){_ref1=PickerDialog.__super__.constructor.apply(this,argu
         console.log("search panel directive controller");
         var vm = this;
         vm.scope = $scope;
-        var nextPage = ''
+        var nextPage;
         var pageSize = 9;
-        vm.userInput = "ACDC"; // just for initial loading
-        vm.listViewSelector;
-        vm.panelFoldSelector = false;
-        vm.isTrackSelected = false;
-        vm.searchResult;
-        vm.selectedWidgetUrl;
+        var widgetAttrs = "&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true"
         vm.defualtPicPath = "assets/images/soundcloud.png";
-        vm.getDatetime = new Date();
+        vm.userInput = "ACDC"; // just for initial loading
+        vm.listViewSelector; // assigned from service to remember the last state
+        vm.panelFoldSelector = false;
+        vm.searchResult;
+        vm.selectedWidgetUrl; // to be broadcasted up the scopes and back to the cloudplayer ctrl
         vm.getSongs = getSongs;
-        vm.setResults = setResults;
+        var setResults = setResults;
         vm.selectSong = selectSong;
         vm.onClickNextBtn = onClickNextBtn;
         vm.changeView = changeView;
 
-        function getSongs() { //        this method retrives all songs with string taken form input field plus saves the search
+        function getSongs() { // this method retrives all songs with string taken form input field plus saves the search to the history service
             console.log("getSongs() running...")
             console.log("search added: " + vm.userInput)
             var self = this
@@ -192,9 +202,9 @@ function PickerDialog(){_ref1=PickerDialog.__super__.constructor.apply(this,argu
                 'limit': pageSize,
                 'linked_partitioning': 1,
             }, function (tracks) {
-                vm.setResults(tracks)
+                setResults(tracks)
             });
-            songHistoryFactory.addSongToRecents(vm.userInput, vm.getDatetime, vm.selectedWidgetUrl)
+            songHistoryFactory.addSongToRecents(vm.userInput, vm.selectedWidgetUrl)
             console.log("Song List:");
             console.log(vm.searchResult);
             vm.listViewSelector = songHistoryFactory.getListViewSelector();
@@ -219,22 +229,18 @@ function PickerDialog(){_ref1=PickerDialog.__super__.constructor.apply(this,argu
 
         function selectSong(selectedSong) {
             console.log("selectSong(selectedSong) running... ")
-            vm.isTrackSelected = true;
-            vm.selectedWidgetUrl = $sce.trustAsResourceUrl("https://w.soundcloud.com/player/?url=" + selectedSong.uri + "&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true");
-            console.log("https://w.soundcloud.com/player/?url=" + selectedSong.uri + "&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true")
-            console.log("isSelected? " + vm.isSelected)
-//           vm.scope.$parent.mainPageCtrl.selectedWidgetUrl = vm.selectedWidgetUrl;
-            vm.scope.$emit('trackUrlSelectedEvent', vm.selectedWidgetUrl, true);
+            vm.selectedWidgetUrl = $sce.trustAsResourceUrl("https://w.soundcloud.com/player/?url=" + selectedSong.uri + widgetAttrs);
+            console.log("https://w.soundcloud.com/player/?url=" + selectedSong.uri + widgetAttrs)
+            vm.scope.$emit('tackSelectedEmitEvent', vm.selectedWidgetUrl);
             vm.panelFoldSelector = true;
             notifier.clickedSongnotify(selectedSong);
         } // sets selected song by user click on a song item from list, also sets a defualt photo if no artwork exists
         function onClickNextBtn() {
             var self = this;
             console.log(vm.searchResult)
-            console.log(vm.selectedWidgetUrl)
             console.log("onClickNextBtn() running...")
             SC.get(nextPage, function (tracks) {
-                vm.setResults(tracks);
+                setResults(tracks);
             })
         }
 
@@ -248,7 +254,6 @@ function PickerDialog(){_ref1=PickerDialog.__super__.constructor.apply(this,argu
         }
     }
 })(angular);
-
 (function(angular){
     angular.module('cpDirectives').directive('searchPanel', searchPanelDirFn)
     function searchPanelDirFn(){
@@ -269,8 +274,9 @@ function PickerDialog(){_ref1=PickerDialog.__super__.constructor.apply(this,argu
     function listSortDirFn(){
         return {
             restrict: 'EA',
+            scope:true,
         template: '<li class="alert alert-info no-bullets" ng-repeat="song in searchPanelCtrl.searchResult" ng-click="searchPanelCtrl.selectSong(song)"> {{song.title}} </li>'
-        }
+        } 
     }
 })(angular);
 (function (angular){
@@ -280,6 +286,7 @@ function PickerDialog(){_ref1=PickerDialog.__super__.constructor.apply(this,argu
         return {
             restrict: 'EA',
             templateUrl: 'app/shared/searchPanel/tileSort/tile-sort.html',
+            scope:true
         }
     }
 })(angular);

@@ -1,10 +1,10 @@
 <div class="col-md-3 col-sm-3 col-xs-3">
     <div class="panel panel-default custpanel">
-        <div class="panel-heading" style="text-align:center">Recent Searches</div>
+        <div class="panel-heading" style="text-align:center">Recent Searches</div> <!-- ./panel-heading -->
         <div class="panel-body">
            
        <table>
-            <tr ng-repeat="searchedItem in recents track by $index">
+            <tr ng-repeat="searchedItem in recents track by $index"> <!-- recents is assigned on isolated scope -->
                 <td>{{searchedItem.name}}</td>
                 <td> <span class="label " style="font-size:15px; color:#A5D8FF;">{{searchedItem.time}}</span></td>
                 <td>{{searchedItem.date}} </td>

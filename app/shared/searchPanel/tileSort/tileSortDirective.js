@@ -5,6 +5,7 @@
         return {
             restrict: 'EA',
             templateUrl: 'app/shared/searchPanel/tileSort/tile-sort.html',
+            scope:true
         }
     }
 })(angular);

@@ -1,44 +1,48 @@
 (function (angular) {
     angular.module('cpServices')
-        .factory('songHistoryFactory', ['$http', '$cookies', songHistoryFactory]);
+        .factory('songHistoryFactory', ['$cookies', songHistoryFactory]);
 
-    function songHistoryFactory($http /*for later use */, $cookies) {
-           var recents = $cookies.getObject('recentSearches') || [];
-        var listViewSelector = $cookies.getObject('viewPicker')
-        if (listViewSelector == undefined){
+    function songHistoryFactory($cookies) {
+        var recents = $cookies.getObject('recentSearches') || [];
+        var listViewSelector = $cookies.getObject('viewPicker');
+        var historyLimit = 5;
+        var getDatetime = new Date();
+        console.log("view selector from serever " + listViewSelector)
+        if (listViewSelector == undefined) {
             listViewSelector = true;
         }
-        console.log("from serever " + listViewSelector)
-        var historyLimit = 5;
         return {
-          getRecentSongs:getRecentSongs,
-            addSongToRecents:addSongToRecents,
-            setListViewSelector:setListViewSelector,
-            getListViewSelector:getListViewSelector
+            getRecentSongs: getRecentSongs,
+            addSongToRecents: addSongToRecents,
+            setListViewSelector: setListViewSelector,
+            getListViewSelector: getListViewSelector
         }
-        function getRecentSongs (){
+
+        function getRecentSongs() {
             return recents;
         }
-//        adds the recent song recived from the controller (userinput ng model) to the array, then saves the array as the value stored inside the recentSearches cookie
-        function addSongToRecents(destSong, searchDatetime, destUrl){
-            var savedObject = {name: destSong,
-                              date: searchDatetime.getDate() + "/" + searchDatetime.getMonth() + "/" + searchDatetime.getFullYear(),
-                               time: searchDatetime.getUTCHours() + ":" + searchDatetime.getUTCMinutes(),
-                               url: destUrl
-                              }
-        if (recents.length >= historyLimit){
+
+        function addSongToRecents(destSong, destUrl) { //        adds the recent song recived from the controller (userinput ng model) to the array, then saves the array as the value stored inside the recentSearches cookie
+            var savedObject = {
+                name: destSong,
+                date: getDatetime.getDate() + "/" + (getDatetime.getMonth() + 1) + "/" + getDatetime.getFullYear(),
+                time: getDatetime.getUTCHours() + 3 + ":" + getDatetime.getUTCMinutes(),
+                url: destUrl
+            }
+            if (recents.length >= historyLimit) {
                 recents.pop();
             }
             recents.unshift(savedObject);
             console.log(recents)
             $cookies.putObject('recentSearches', recents);
         }
-//        changes the listViewSelector param then saves it as cookie value
-        function setListViewSelector(destSelector){
+
+        function setListViewSelector(destSelector) { //  changes the listViewSelector param then saves it as cookie value
             listViewSelector = !listViewSelector;
             $cookies.putObject('viewPicker', listViewSelector)
         }
-        function getListViewSelector(){
+
+        function getListViewSelector() {
             return listViewSelector;
         }
     }

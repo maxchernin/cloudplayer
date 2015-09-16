@@ -6,7 +6,8 @@ var gulp = require('gulp'),
     concat = require('gulp-concat'),
     notify = require('gulp-notify'),
     cache = require('gulp-cache'),
-    del = require('del');
+    del = require('del'),
+    browserSync = require('browser-sync').create();
 
 gulp.task('scripts', function () {
     return gulp.src(['app/**/*.js', '!app/build/**/*.js'])
@@ -37,8 +38,9 @@ gulp.task('clean', function (cb) {
     del(['build/assets/css', 'build/app/javascript', 'build/assets/images'], cb)
 });
 
+
 gulp.task('default', ['clean'], function () {
-    gulp.start('scripts', 'images', 'watch');
+    gulp.start('scripts', 'images', 'serve', 'watch');
 
 });
 gulp.task('watch', function () {
@@ -50,6 +52,23 @@ gulp.task('watch', function () {
 
     // Watch image files
     gulp.watch('assets/images/**/*', ['images']);
+    gulp.watch(['index.html', 'build/app/**/*.js', 'app/**/*.html']).on('change', browserSync.reload);
 
-
+});
+gulp.task('serve', function(){
+    if (browserSync.active){
+        return;
+    };
+    browserSync.init({
+    injectChanges: true,
+    server: ['./','build/app/**/*.*', 'app/**/*.html'],
+    ghostMode: {
+        clicks:true,
+        location: false,
+        forms: true,
+        scroll:true,
+    },
+        notify: true,
+        reloadDelay: 1000
+    }) 
 });
